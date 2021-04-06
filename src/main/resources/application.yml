@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: sa
+    data: classpath:/sql/*.sql
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate.ddl-auto: create-drop
+  h2:
+    console.enabled: true
+
+logging:
+  level:
+    com.sagas.demo: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  security:
+    enable: true
+  health:
+    show-details: ALWAYS
+    binders:
+      enabled: true
+
+application.jwt:
+  secretKey: secure1234secure1234secure1234secure1234secure1234secure1234
+  tokenPrefix: "Bearer "
+  tokenExpirationAfterDays: 10
