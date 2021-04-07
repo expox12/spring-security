@@ -16,7 +16,7 @@ spring:
 
 logging:
   level:
-    com.sagas.demo: DEBUG
+    com.security.sample: DEBUG
 
 management:
   endpoints:

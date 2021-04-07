@@ -15,7 +15,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -39,12 +43,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        if(userOptional.isEmpty()) {
-            throw new UsernameNotFoundException(String.format("User %s not found", username));
-        }
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found", username)));
 
-        User user = userOptional.get();
         List<Role> userRoles = roleRepository.findAllByUsersIn(Collections.singletonList(user));
         List<Capability> capabilitiesOfRoles = capabilityRepository.findAllByRolesIn(userRoles);
         List<Capability> userCapabilities = capabilityRepository.findAllByUsersIn(Collections.singletonList(user));

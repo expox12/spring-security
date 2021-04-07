@@ -1,6 +1,5 @@
 package com.security.sample.config;
 
-import com.security.sample.security.CustomUserDetailsService;
 import com.security.sample.security.jwt.JwtConfig;
 import com.security.sample.security.jwt.JwtTokenVerifier;
 import com.security.sample.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.crypto.SecretKey;
 
@@ -21,18 +19,12 @@ import javax.crypto.SecretKey;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final PasswordEncoder passwordEncoder;
-    private final CustomUserDetailsService  customUserDetailsService;
     private final SecretKey secretKey;
     private final JwtConfig jwtConfig;
 
     @Autowired
-    public SecurityConfig(PasswordEncoder passwordEncoder,
-                          CustomUserDetailsService customUserDetailsService,
-                          SecretKey secretKey,
+    public SecurityConfig(SecretKey secretKey,
                           JwtConfig jwtConfig) {
-        this.passwordEncoder = passwordEncoder;
-        this.customUserDetailsService = customUserDetailsService;
         this.secretKey = secretKey;
         this.jwtConfig = jwtConfig;
     }
