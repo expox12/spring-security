@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -64,5 +66,16 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .compact();
 
         response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + token);
+        response.addHeader("Content-Type", "application/json;charset=utf-8");
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("access_token", jwtConfig.getTokenPrefix() + token);
+        body.put("status", 200);
+        response.getWriter().append(new ObjectMapper().writeValueAsString(body));
+    }
+
+    @Override
+    public void setFilterProcessesUrl(String filterProcessesUrl) {
+        super.setFilterProcessesUrl(filterProcessesUrl);
     }
 }
